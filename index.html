@@ -202,7 +202,9 @@
       border-radius:var(--r-xl); padding:20px 18px;
       backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
       box-shadow:0 20px 48px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07);
+      position: relative; z-index: 2; /* pastikan card data siswa di atas card-wali */
     }
+    #card-wali { z-index: 1; } /* card wali di bawah agar tidak tutup dropdown */
     @media (min-width:640px) { .card { padding:26px 24px; } }
 
     .card-lbl {
@@ -249,8 +251,8 @@
     .sug {
       position:absolute; top:calc(100% + 5px); left:0; right:0;
       background:#0d1e40; border:1px solid rgba(251,191,36,.22);
-      border-radius:var(--r-md); z-index:200; display:none;
-      box-shadow:0 20px 40px rgba(0,0,0,.5); max-height:220px; overflow-y:auto;
+      border-radius:var(--r-md); z-index:9500; display:none;
+      box-shadow:0 20px 40px rgba(0,0,0,.8); max-height:220px; overflow-y:auto;
     }
     .sug.on { display:block; }
     .sug-item { padding:11px 16px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,.05); transition:background .15s; }
@@ -468,7 +470,7 @@
     <div class="qr-prev" id="qr-prev" onclick="onQrPreviewClick()">
       <div class="qr-prev-inner">
         <div class="qr-prev-img-wrap">
-          <img id="qr-prev-img" src="" alt="QR Preview">
+          <img id="qr-prev-img" src="" alt="QR Preview" crossorigin="anonymous">
           <div class="qr-prev-lock">🔒</div>
         </div>
         <div class="qr-prev-info">
