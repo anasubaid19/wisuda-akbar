@@ -762,7 +762,7 @@ function pickSiswa(s) {
   prevTags.innerHTML   = pill(s.idUnik) + pill(s.cabang) + pill(`Kursi ${s.nomorKursi}`) + pill(s.kelas);
   prevBox.classList.add('on');
 
-  qrPrevImg.src          = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${enc(s.idUnik)}&color=0d1e40`;
+  qrPrevImg.src          = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${enc(s.idUnik)}&color=0d1e40&bgcolor=ffffff`;
   qrPrevNama.textContent = s.nama;
   qrPrev.classList.add('on');
 
@@ -869,8 +869,12 @@ btnKonf.addEventListener('click', async () => {
 
 // ── QR CARD ──────────────────────────────────────────
 function fillQrCard(s) {
-  const hl = s.hari === 1 ? 'Hari 1 — Ikhwan' : 'Hari 2 — Akhwat';
-  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${enc(s.idUnik)}&color=0d1e40&bgcolor=ffffff`;
+  const hl  = s.hari === 1 ? 'Hari 1 — Ikhwan' : 'Hari 2 — Akhwat';
+  const url = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${enc(s.idUnik)}&color=0d1e40&bgcolor=ffffff`;
+
+  // Pakai URL yang sama dengan preview → sudah di-cache browser → instan
+  qrImg.src = url;
+
   qrNama.textContent = s.nama;
   qrPillsA.innerHTML = qcPill(s.idUnik) + qcPill(s.cabang) + qcPill(`Kursi ${s.nomorKursi}`);
   qrPillsB.innerHTML = qcPillSm(`${s.jenjang} · ${s.kelas}`) + qcPillSm(hl);
