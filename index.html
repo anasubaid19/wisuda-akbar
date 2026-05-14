@@ -51,26 +51,130 @@
         radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(29,78,216,.06)  0%,transparent 70%);
     }
 
-    /* ── LAYOUT ── */
+    /* ════════════════════════════════════════
+       LOADING SCREEN
+    ════════════════════════════════════════ */
+    .loading-screen {
+      position: fixed; inset: 0; z-index: 99999;
+      background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 0;
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+
+    .loading-screen.hide {
+      opacity: 0; visibility: hidden; pointer-events: none;
+    }
+
+    .ls-glow {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 50% 30%, rgba(251,191,36,.12) 0%,transparent 60%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(59,130,246,.1)  0%,transparent 55%);
+    }
+
+    .ls-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 28px;
+      padding: 0 32px;
+      width: 100%; max-width: 340px;
+    }
+
+    .ls-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(251,191,36,.1); border: 1px solid rgba(251,191,36,.28);
+      border-radius: 999px; padding: 5px 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gold);
+    }
+
+    .ls-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold); animation: pdot 2s ease-in-out infinite;
+    }
+
+    @keyframes pdot {
+      0%,100%{opacity:1;box-shadow:0 0 7px var(--gold);}
+      50%{opacity:.3;box-shadow:none;}
+    }
+
+    .ls-title {
+      text-align: center;
+      font-size: 32px; font-weight: 900;
+      line-height: 1.1; letter-spacing: -.5px;
+    }
+
+    .ls-title em { font-style: normal; color: var(--gold); }
+
+    .ls-sub {
+      font-size: 13px; color: rgba(255,255,255,.4);
+      text-align: center; font-weight: 500; line-height: 1.6;
+      margin-top: -12px;
+    }
+
+    /* Progress bar */
+    .ls-progress-wrap {
+      width: 100%;
+      background: rgba(255,255,255,.07);
+      border-radius: 999px; height: 6px;
+      overflow: hidden;
+    }
+
+    .ls-progress-bar {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--gold-dk), var(--gold), var(--gold-lt));
+      border-radius: 999px;
+      transition: width .4s ease;
+      box-shadow: 0 0 12px rgba(251,191,36,.5);
+    }
+
+    .ls-status {
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,.4); text-align: center;
+      letter-spacing: .3px; min-height: 18px;
+    }
+
+    .ls-status span { color: var(--gold); }
+
+    /* Ornamen bintang */
+    .ls-stars {
+      display: flex; gap: 6px; margin-top: -8px;
+    }
+
+    .ls-stars i {
+      width: 4px; height: 4px; border-radius: 50%;
+      background: rgba(251,191,36,.3);
+      animation: starPulse 1.5s ease-in-out infinite;
+    }
+
+    .ls-stars i:nth-child(2) { animation-delay: .3s; }
+    .ls-stars i:nth-child(3) { animation-delay: .6s; }
+    .ls-stars i:nth-child(4) { animation-delay: .9s; }
+    .ls-stars i:nth-child(5) { animation-delay: 1.2s; }
+
+    @keyframes starPulse {
+      0%,100%{background:rgba(251,191,36,.2);transform:scale(1);}
+      50%{background:rgba(251,191,36,.8);transform:scale(1.5);}
+    }
+
+    /* ════════════════════════════════════════
+       LAYOUT UTAMA
+    ════════════════════════════════════════ */
     .wrap {
-      position:relative; z-index:1;
-      width:100%; max-width:520px;
-      margin:0 auto;
-      padding:0 16px 72px;
-      display:flex; flex-direction:column; align-items:center; gap:14px;
+      position: relative; z-index: 1;
+      width: 100%; max-width: 520px;
+      margin: 0 auto;
+      padding: 0 16px 72px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
 
-    @media (min-width:640px) {
-      .wrap { max-width:620px; padding:0 32px 80px; gap:18px; }
-    }
-
-    @media (min-width:1024px) {
-      .wrap { max-width:680px; padding:0 40px 80px; }
-    }
+    @media (min-width:640px)  { .wrap { max-width:620px; padding:0 32px 80px; gap:18px; } }
+    @media (min-width:1024px) { .wrap { max-width:680px; padding:0 40px 80px; } }
 
     /* ── HEADER ── */
     .hdr { width:100%; text-align:center; padding:44px 0 4px; }
-
     @media (min-width:640px) { .hdr { padding:60px 0 8px; } }
 
     .hdr-badge {
@@ -84,38 +188,20 @@
       width:6px; height:6px; border-radius:50%; background:var(--gold);
       animation:pdot 2s ease-in-out infinite;
     }
-    @keyframes pdot { 0%,100%{opacity:1;box-shadow:0 0 7px var(--gold);}50%{opacity:.3;box-shadow:none;} }
-
-    .hdr h1 {
-      font-size:28px; font-weight:900; line-height:1.12; letter-spacing:-.5px;
-    }
-    @media (min-width:640px) { .hdr h1 { font-size:36px; } }
+    .hdr h1 { font-size:28px; font-weight:900; line-height:1.12; letter-spacing:-.5px; }
+    @media (min-width:640px)  { .hdr h1 { font-size:36px; } }
     @media (min-width:1024px) { .hdr h1 { font-size:40px; } }
-
     .hdr h1 em { font-style:normal; color:var(--gold); }
-
-    .hdr-sub {
-      margin-top:10px; font-size:13px; color:rgba(255,255,255,.45);
-      font-weight:500; line-height:1.6;
-    }
+    .hdr-sub { margin-top:10px; font-size:13px; color:rgba(255,255,255,.45); font-weight:500; line-height:1.6; }
     @media (min-width:640px) { .hdr-sub { font-size:14px; } }
-
-    .hdr-rule {
-      width:48px; height:2px; margin:18px auto 0; border-radius:999px;
-      background:linear-gradient(90deg,transparent,var(--gold),transparent);
-    }
+    .hdr-rule { width:48px; height:2px; margin:18px auto 0; border-radius:999px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
 
     /* ── GLASS CARD ── */
     .card {
-      width:100%;
-      background:var(--glass);
-      border:1px solid var(--glass-bd);
-      border-radius:var(--r-xl);
-      padding:20px 18px;
-      backdrop-filter:blur(22px);
-      -webkit-backdrop-filter:blur(22px);
+      width:100%; background:var(--glass); border:1px solid var(--glass-bd);
+      border-radius:var(--r-xl); padding:20px 18px;
+      backdrop-filter:blur(22px); -webkit-backdrop-filter:blur(22px);
       box-shadow:0 20px 48px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.07);
-      transition:opacity .3s, transform .3s;
     }
     @media (min-width:640px) { .card { padding:26px 24px; } }
 
@@ -124,36 +210,22 @@
       text-transform:uppercase; color:var(--gold); margin-bottom:16px;
       display:flex; align-items:center; gap:8px;
     }
-    .card-lbl::before {
-      content:''; display:block; width:3px; height:14px;
-      border-radius:999px; background:var(--gold);
-    }
+    .card-lbl::before { content:''; display:block; width:3px; height:14px; border-radius:999px; background:var(--gold); }
 
     /* ── FORM ── */
     .fg { margin-bottom:13px; position:relative; }
     .fg:last-child { margin-bottom:0; }
-
-    .fg-row {
-      display:grid; grid-template-columns:1fr 1fr; gap:12px;
-      margin-bottom:13px;
-    }
+    .fg-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:13px; }
     .fg-row .fg { margin-bottom:0; }
 
-    label {
-      display:block; font-size:12px; font-weight:600;
-      color:rgba(255,255,255,.55); margin-bottom:7px; letter-spacing:.2px;
-    }
+    label { display:block; font-size:12px; font-weight:600; color:rgba(255,255,255,.55); margin-bottom:7px; letter-spacing:.2px; }
 
-    /* font-size 16px → anti zoom iOS */
     select, input {
-      width:100%;
-      background:rgba(255,255,255,.06);
+      width:100%; background:rgba(255,255,255,.06);
       border:1.5px solid rgba(255,255,255,.1);
-      border-radius:var(--r-md);
-      color:var(--white);
+      border-radius:var(--r-md); color:var(--white);
       font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:16px; font-weight:500;
-      padding:13px 16px;
+      font-size:16px; font-weight:500; padding:13px 16px;
       outline:none;
       transition:border-color .2s, background .2s, box-shadow .2s;
       -webkit-appearance:none; appearance:none;
@@ -164,11 +236,7 @@
       padding-right:40px; cursor:pointer;
     }
     select option { background:#0d1e40; color:white; }
-    select:focus, input:focus {
-      border-color:rgba(251,191,36,.55);
-      background:rgba(255,255,255,.09);
-      box-shadow:0 0 0 3px rgba(251,191,36,.1);
-    }
+    select:focus, input:focus { border-color:rgba(251,191,36,.55); background:rgba(255,255,255,.09); box-shadow:0 0 0 3px rgba(251,191,36,.1); }
     input::placeholder { color:rgba(255,255,255,.28); }
     select:disabled, input:disabled { opacity:.35; cursor:not-allowed; }
 
@@ -182,102 +250,53 @@
       position:absolute; top:calc(100% + 5px); left:0; right:0;
       background:#0d1e40; border:1px solid rgba(251,191,36,.22);
       border-radius:var(--r-md); z-index:200; display:none;
-      box-shadow:0 20px 40px rgba(0,0,0,.5);
-      max-height:220px; overflow-y:auto;
+      box-shadow:0 20px 40px rgba(0,0,0,.5); max-height:220px; overflow-y:auto;
     }
     .sug.on { display:block; }
-    .sug-item {
-      padding:11px 16px; cursor:pointer;
-      border-bottom:1px solid rgba(255,255,255,.05);
-      transition:background .15s;
-    }
+    .sug-item { padding:11px 16px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,.05); transition:background .15s; }
     .sug-item:last-child { border-bottom:none; }
     .sug-item:hover { background:rgba(251,191,36,.1); }
     .sug-name { font-size:14px; font-weight:700; color:var(--white); }
     .sug-meta { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; }
-    .sug-empty, .sug-load {
-      padding:16px; text-align:center; font-size:13px;
-      color:rgba(255,255,255,.35);
-      display:flex; align-items:center; justify-content:center; gap:8px;
-    }
-    .dots span {
-      display:inline-block; width:5px; height:5px;
-      background:var(--gold); border-radius:50%;
-      animation:db 1s ease-in-out infinite;
-    }
-    .dots span:nth-child(2){animation-delay:.15s;}
-    .dots span:nth-child(3){animation-delay:.30s;}
-    @keyframes db{0%,80%,100%{transform:scale(.55);opacity:.35;}40%{transform:scale(1);opacity:1;}}
+    .sug-empty { padding:16px; text-align:center; font-size:13px; color:rgba(255,255,255,.35); }
 
     /* ── PREVIEW SISWA ── */
     .prev-box {
-      margin-top:10px;
-      background:rgba(251,191,36,.07); border:1px solid rgba(251,191,36,.22);
-      border-radius:var(--r-md); padding:13px 16px;
-      display:none; animation:fadeUp .25s ease;
+      margin-top:10px; background:rgba(251,191,36,.07);
+      border:1px solid rgba(251,191,36,.22); border-radius:var(--r-md);
+      padding:13px 16px; display:none; animation:fadeUp .25s ease;
     }
     .prev-box.on { display:block; }
-    @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-
+    @keyframes fadeUp { from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;} }
     .prev-nama { font-size:15px; font-weight:700; margin-bottom:8px; }
     .prev-tags { display:flex; flex-wrap:wrap; gap:6px; }
-    .prev-tag {
-      background:rgba(251,191,36,.13); border:1px solid rgba(251,191,36,.28);
-      border-radius:999px; padding:3px 11px;
-      font-size:11px; font-weight:700; color:var(--gold);
-    }
+    .prev-tag { background:rgba(251,191,36,.13); border:1px solid rgba(251,191,36,.28); border-radius:999px; padding:3px 11px; font-size:11px; font-weight:700; color:var(--gold); }
 
-    /* ── QR PREVIEW (BLUR) ── */
-    .qr-prev {
-      margin-top:12px;
-      display:none; animation:fadeUp .3s ease;
-      cursor:pointer;
-    }
+    /* ── QR PREVIEW BLUR ── */
+    .qr-prev { margin-top:12px; display:none; animation:fadeUp .3s ease; cursor:pointer; }
     .qr-prev.on { display:block; }
-
     .qr-prev-inner {
       display:flex; align-items:center; gap:14px;
-      background:rgba(13,30,64,.8);
-      border:1px solid rgba(251,191,36,.2);
-      border-radius:var(--r-md); padding:14px 16px;
-      transition:background .2s;
+      background:rgba(13,30,64,.8); border:1px solid rgba(251,191,36,.2);
+      border-radius:var(--r-md); padding:14px 16px; transition:background .2s;
     }
     .qr-prev-inner:hover { background:rgba(13,30,64,1); }
-
-    .qr-prev-img-wrap {
-      position:relative; width:60px; height:60px; flex-shrink:0;
-    }
-    .qr-prev-img-wrap img {
-      width:60px; height:60px; border-radius:8px;
-      filter:blur(5px); opacity:.6;
-    }
-    .qr-prev-lock {
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-      font-size:22px;
-    }
-
+    .qr-prev-img-wrap { position:relative; width:60px; height:60px; flex-shrink:0; }
+    .qr-prev-img-wrap img { width:60px; height:60px; border-radius:8px; filter:blur(5px); opacity:.6; }
+    .qr-prev-lock { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:22px; }
     .qr-prev-info { flex:1; }
     .qr-prev-nama { font-size:13px; font-weight:700; color:var(--white); margin-bottom:4px; }
     .qr-prev-hint { font-size:11px; color:rgba(255,255,255,.45); line-height:1.4; }
-
-    .qr-prev-arrow {
-      font-size:18px; color:rgba(251,191,36,.4); flex-shrink:0;
-    }
+    .qr-prev-arrow { font-size:18px; color:rgba(251,191,36,.4); flex-shrink:0; }
 
     /* ── INFO BOX ── */
-    .info {
-      width:100%; display:flex; gap:10px; align-items:flex-start;
-      background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2);
-      border-radius:var(--r-md); padding:13px 15px;
-      font-size:12.5px; color:rgba(255,255,255,.55); line-height:1.55;
-    }
+    .info { width:100%; display:flex; gap:10px; align-items:flex-start; background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2); border-radius:var(--r-md); padding:13px 15px; font-size:12.5px; color:rgba(255,255,255,.55); line-height:1.55; }
     .info-ic { color:var(--blue-lt); font-size:15px; flex-shrink:0; margin-top:1px; }
 
     /* ── BUTTON ── */
     .btn-main {
-      width:100%; padding:16px;
-      background:var(--gold); border:none; border-radius:var(--r-lg);
+      width:100%; padding:16px; background:var(--gold);
+      border:none; border-radius:var(--r-lg);
       font-family:'Plus Jakarta Sans',sans-serif;
       font-size:15px; font-weight:800; color:var(--navy);
       cursor:pointer; letter-spacing:.3px;
@@ -287,12 +306,7 @@
     .btn-main:active { transform:scale(.98); }
     .btn-main:disabled { opacity:.4; cursor:not-allowed; transform:none; }
     .btn-main.loading { opacity:.75; cursor:wait; }
-
-    .btn-spin {
-      width:17px; height:17px;
-      border:2.5px solid rgba(13,30,64,.25); border-top-color:var(--navy);
-      border-radius:50%; animation:spin .7s linear infinite; display:none;
-    }
+    .btn-spin { width:17px; height:17px; border:2.5px solid rgba(13,30,64,.25); border-top-color:var(--navy); border-radius:50%; animation:spin .7s linear infinite; display:none; }
     .btn-main.loading .btn-spin { display:block; }
     @keyframes spin{to{transform:rotate(360deg);}}
 
@@ -307,12 +321,9 @@
       transition:opacity .25s, transform .25s;
       box-shadow:0 8px 24px rgba(0,0,0,.4);
     }
-    .toast.on {
-      opacity:1; pointer-events:all;
-      transform:translateX(-50%) translateY(0);
-    }
+    .toast.on { opacity:1; pointer-events:all; transform:translateX(-50%) translateY(0); }
 
-    /* ── MODAL BASE ── */
+    /* ── MODAL ── */
     .overlay {
       position:fixed; inset:0;
       background:rgba(0,0,0,.72);
@@ -322,8 +333,6 @@
       opacity:0; pointer-events:none; transition:opacity .3s ease;
     }
     .overlay.on { opacity:1; pointer-events:all; }
-
-    /* QR modal lebih tinggi dari duplikat modal */
     #ov-qr { z-index:9100; }
 
     .m-inner {
@@ -336,93 +345,81 @@
 
     /* ── DUPLICATE MODAL ── */
     .dup-card {
-      width:100%; max-width:300px;
-      background:rgba(13,30,64,.95);
-      border:1px solid rgba(251,191,36,.25);
-      border-radius:var(--r-xl); padding:28px 22px;
-      text-align:center;
+      width:100%; background:rgba(13,30,64,.95);
+      border:1px solid rgba(251,191,36,.25); border-radius:var(--r-xl);
+      padding:28px 22px; text-align:center;
       box-shadow:0 28px 60px rgba(0,0,0,.6);
     }
     .dup-icon { font-size:40px; margin-bottom:14px; }
     .dup-title { font-size:18px; font-weight:800; color:var(--gold-lt); margin-bottom:10px; }
-    .dup-msg {
-      font-size:13px; color:rgba(255,255,255,.65); line-height:1.6;
-      background:rgba(0,0,0,.2); border-radius:var(--r-sm);
-      padding:12px; margin-bottom:20px;
-    }
+    .dup-msg { font-size:13px; color:rgba(255,255,255,.65); line-height:1.6; background:rgba(0,0,0,.2); border-radius:var(--r-sm); padding:12px; margin-bottom:20px; }
     .dup-msg strong { color:var(--white); }
 
-    /* ── QR CARD MODAL ── */
+    /* ── QR CARD ── */
     .qr-card {
-      width:280px; background:#0d1e40;
-      border-radius:22px; padding:22px 20px 20px;
+      width:280px; background:#0d1e40; border-radius:22px; padding:22px 20px 20px;
       display:flex; flex-direction:column; align-items:center;
-      border:1px solid rgba(251,191,36,.22);
-      box-shadow:0 28px 60px rgba(0,0,0,.6);
+      border:1px solid rgba(251,191,36,.22); box-shadow:0 28px 60px rgba(0,0,0,.6);
     }
     .qc-hdr { text-align:center; margin-bottom:18px; }
     .qc-school { font-size:8.5px; font-weight:700; letter-spacing:2.5px; color:var(--gold); margin-bottom:5px; }
     .qc-event  { font-size:23px; font-weight:900; color:var(--gold); line-height:1.1; }
     .qc-year   { font-size:23px; font-weight:900; color:var(--white); line-height:1.1; }
     .qc-ang    { font-size:8.5px; font-weight:600; color:rgba(251,191,36,.5); margin-top:5px; letter-spacing:1.5px; }
-
-    .qc-qr {
-      background:#fff; border-radius:14px; padding:13px;
-      margin-bottom:18px; border:1px solid rgba(251,191,36,.18);
-    }
+    .qc-qr { background:#fff; border-radius:14px; padding:13px; margin-bottom:18px; border:1px solid rgba(251,191,36,.18); }
     .qc-qr img { display:block; border-radius:4px; }
-
-    .qc-name {
-      font-size:14px; font-weight:800; color:var(--white);
-      text-align:center; letter-spacing:.4px; margin-bottom:14px;
-    }
+    .qc-name { font-size:14px; font-weight:800; color:var(--white); text-align:center; letter-spacing:.4px; margin-bottom:14px; }
     .qc-pills { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:8px; }
-    .qc-pill {
-      background:rgba(255,255,255,.07); border:1px solid rgba(251,191,36,.32);
-      border-radius:999px; padding:4px 11px;
-      font-size:10px; font-weight:700; color:var(--gold); letter-spacing:.5px;
-    }
-    .qc-pill-sm {
-      background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1);
-      border-radius:999px; padding:4px 10px;
-      font-size:9px; font-weight:600; color:rgba(255,255,255,.42);
-    }
+    .qc-pill { background:rgba(255,255,255,.07); border:1px solid rgba(251,191,36,.32); border-radius:999px; padding:4px 11px; font-size:10px; font-weight:700; color:var(--gold); letter-spacing:.5px; }
+    .qc-pill-sm { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:4px 10px; font-size:9px; font-weight:600; color:rgba(255,255,255,.42); }
     .qc-rule { width:100%; height:1px; background:rgba(251,191,36,.14); margin:10px 0; }
 
     /* ── MODAL BUTTONS ── */
-    .mb-gold {
-      width:280px; padding:14px; background:var(--gold);
-      border:none; border-radius:var(--r-lg);
-      font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:14px; font-weight:800; color:var(--navy);
-      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
-      transition:transform .18s;
-    }
+    .mb-gold { width:280px; padding:14px; background:var(--gold); border:none; border-radius:var(--r-lg); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800; color:var(--navy); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:transform .18s; }
     .mb-gold:active { transform:scale(.97); }
-
-    .mb-ghost {
-      width:280px; padding:13px;
-      background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1);
-      border-radius:var(--r-lg);
-      font-family:'Plus Jakarta Sans',sans-serif;
-      font-size:14px; font-weight:600; color:rgba(255,255,255,.5);
-      cursor:pointer; transition:background .2s;
-    }
+    .mb-ghost { width:280px; padding:13px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:var(--r-lg); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:600; color:rgba(255,255,255,.5); cursor:pointer; transition:background .2s; }
     .mb-ghost:active { background:rgba(255,255,255,.1); }
 
     /* ── FOOTER ── */
-    .foot {
-      font-size:12px; color:rgba(255,255,255,.22);
-      text-align:center; font-weight:500; padding-top:4px;
-    }
+    .foot { font-size:12px; color:rgba(255,255,255,.22); text-align:center; font-weight:500; padding-top:4px; }
     .foot a { color:var(--gold); text-decoration:none; }
   </style>
 </head>
 <body>
 
+<!-- ══════════════════════════════════════
+     LOADING SCREEN
+══════════════════════════════════════ -->
+<div class="loading-screen" id="loading-screen">
+  <div class="ls-glow"></div>
+  <div class="ls-content">
+    <div class="ls-badge">
+      <div class="ls-badge-dot"></div>
+      Wisuda Akbar 2026
+    </div>
+
+    <div class="ls-title">Portal <em>Wisuda</em><br>AL-WILDAN</div>
+    <p class="ls-sub">Mempersiapkan sistem konfirmasi kehadiran<br>peserta wisuda akbar angkatan ke-12</p>
+
+    <div class="ls-stars">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+
+    <div style="width:100%">
+      <div class="ls-progress-wrap">
+        <div class="ls-progress-bar" id="ls-bar"></div>
+      </div>
+    </div>
+
+    <div class="ls-status" id="ls-status">Menghubungkan ke server...</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KONTEN UTAMA
+══════════════════════════════════════ -->
 <div class="wrap">
 
-  <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-badge"><i></i> Wisuda Akbar 2026</div>
     <h1>Portal <em>Wisuda Akbar</em><br>AL-WILDAN 2026</h1>
@@ -430,7 +427,6 @@
     <div class="hdr-rule"></div>
   </div>
 
-  <!-- INFO -->
   <div class="info">
     <span class="info-ic">ℹ</span>
     Isi form berikut untuk mengkonfirmasi kehadiran dan mendapatkan kartu QR. Kartu QR digunakan sebagai tanda masuk pada hari pelaksanaan wisuda.
@@ -464,13 +460,11 @@
       </div>
     </div>
 
-    <!-- Preview info siswa -->
     <div class="prev-box" id="prev-box">
       <div class="prev-nama" id="prev-nama">—</div>
       <div class="prev-tags" id="prev-tags"></div>
     </div>
 
-    <!-- Preview QR blur -->
     <div class="qr-prev" id="qr-prev" onclick="onQrPreviewClick()">
       <div class="qr-prev-inner">
         <div class="qr-prev-img-wrap">
@@ -516,7 +510,6 @@
     </div>
   </div>
 
-  <!-- TOMBOL KONFIRMASI -->
   <button class="btn-main" id="btn-konf" disabled>
     <div class="btn-spin"></div>
     <span id="btn-txt">✦ Konfirmasi Kehadiran</span>
@@ -535,13 +528,11 @@
     <div class="dup-card">
       <div class="dup-icon">⚠️</div>
       <div class="dup-title">Sudah Dikonfirmasi</div>
-      <div class="dup-msg" id="dup-msg">
+      <div class="dup-msg">
         Kehadiran <strong id="dup-nama">—</strong> sudah dikonfirmasi sebelumnya.
         Kartu QR tetap dapat diunduh.
       </div>
-      <button class="mb-gold" style="width:100%;margin-bottom:10px;" id="btn-dup-lihat">
-        Lihat Kartu QR
-      </button>
+      <button class="mb-gold" style="width:100%;margin-bottom:10px;" id="btn-dup-lihat">Lihat Kartu QR</button>
       <button class="mb-ghost" style="width:100%;" id="btn-dup-tutup">Tutup</button>
     </div>
   </div>
@@ -571,14 +562,16 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  KONFIGURASI — ganti GAS_URL setelah deploy GAS baru
-// ═══════════════════════════════════════════════════════════════
-const GAS_URL     = 'https://script.google.com/macros/s/AKfycbxFX7VqyzSYaofH5TMp24QBOBFo9a_5yEGHw0398VZAK3GngH_p-DadXhlxyXHELfaI/exec';
-const SESSION_KEY = 'wisuda26_v2';
+// ═══════════════════════════════════════════════════
+//  KONFIGURASI
+// ═══════════════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxGa-v1k1t5MU8QE0UJjjx7AVU4WN5JuVaIKsL0_lfGyiFvOItA6KQ-CyQHMIX0lOKw/exec';
 
-// ── REFS ──────────────────────────────────────────────────────
-const $  = id => document.getElementById(id);
+// ── REFS ────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const lsBar      = $('ls-bar');
+const lsStatus   = $('ls-status');
+const lsScreen   = $('loading-screen');
 const selCabang  = $('sel-cabang');
 const selJenjang = $('sel-jenjang');
 const inpNama    = $('inp-nama');
@@ -606,102 +599,136 @@ const qrPillsA   = $('qr-pills-a');
 const qrPillsB   = $('qr-pills-b');
 const btnDl      = $('btn-dl');
 
-// ── STATE ────────────────────────────────────────────────────
-let siswa       = null;
-let submitting  = false;
-let toastTimer  = null;
-let studentCache = {};   // key: 'cabang|jenjang' → array siswa
-let pendingSiswa = null; // untuk duplikat modal → buka QR
+// ── STATE ───────────────────────────────────────────
+let allStudents  = [];   // semua siswa dari GAS
+let siswa        = null;
+let submitting   = false;
+let toastTimer   = null;
+let pendingSiswa = null;
 
-// ── TOAST ─────────────────────────────────────────────────────
-function showToast(msg, duration = 3000) {
-  toast.textContent = msg;
-  toast.classList.add('on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('on'), duration);
+// ── PROGRESS BAR ────────────────────────────────────
+function setProgress(pct, msg) {
+  lsBar.style.width = pct + '%';
+  lsStatus.innerHTML = msg;
 }
 
-// ── LOAD CABANG ───────────────────────────────────────────────
-async function loadCabang() {
+// ── LOAD ALL DATA (sekali saat buka) ───────────────
+async function initApp() {
   try {
-    const r = await fetch(`${GAS_URL}?action=getCabang`);
+    setProgress(10, 'Menghubungkan ke server...');
+    await sleep(300);
+
+    setProgress(30, 'Mengambil data <span>' + 'siswa</span>...');
+    const r = await fetch(`${GAS_URL}?action=getAllStudents`);
+
+    setProgress(70, 'Memproses <span>1.500+</span> data siswa...');
     const d = await r.json();
-    if (d.status === 'success' && d.data.length) {
-      selCabang.innerHTML = '<option value="">— Pilih Cabang —</option>';
-      d.data.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c; o.textContent = c;
-        selCabang.appendChild(o);
-      });
-      selCabang.disabled = false;
-    }
-  } catch {
-    selCabang.innerHTML = '<option value="">Gagal memuat — refresh halaman</option>';
+
+    if (d.status !== 'success' || !d.data.length) throw new Error('Data kosong');
+
+    allStudents = d.data;
+
+    setProgress(90, 'Menyiapkan antarmuka...');
+    await sleep(300);
+
+    // Populate cabang dropdown dari data
+    const cabangSet = {};
+    allStudents.forEach(s => { cabangSet[s.cabang] = true; });
+    const cabangList = Object.keys(cabangSet).sort((a, b) => {
+      return (parseInt(a.replace(/\D/g,''))||0) - (parseInt(b.replace(/\D/g,''))||0);
+    });
+
+    selCabang.innerHTML = '<option value="">— Pilih Cabang —</option>';
+    cabangList.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      selCabang.appendChild(o);
+    });
+    selCabang.disabled = false;
+
+    setProgress(100, `✓ <span>${allStudents.length} data siswa</span> berhasil dimuat`);
+    await sleep(600);
+
+    // Sembunyikan loading screen
+    lsScreen.classList.add('hide');
+
+  } catch (err) {
+    setProgress(100, '❌ Gagal memuat data — <span>refresh halaman</span>');
+    lsBar.style.background = '#ef4444';
+    console.error(err);
   }
 }
 
-// ── LOAD JENJANG ──────────────────────────────────────────────
-async function loadJenjang(cabang) {
-  selJenjang.disabled = true;
-  selJenjang.innerHTML = '<option value="">Memuat...</option>';
-  inpNama.disabled = true;
+// ── FILTER LOKAL (semua instan) ─────────────────────
+function getCabangStudents(cabang) {
+  return allStudents.filter(s => s.cabang === cabang);
+}
+
+function getJenjangList(cabang) {
+  const set = {};
+  allStudents.forEach(s => { if (s.cabang === cabang) set[s.jenjang] = true; });
+  return Object.keys(set).sort();
+}
+
+function searchStudents(cabang, jenjang, query) {
+  const q = query.toLowerCase().trim();
+  if (q.length < 3) return [];
+  return allStudents
+    .filter(s => s.cabang === cabang && s.jenjang === jenjang && s.nama.toLowerCase().includes(q))
+    .slice(0, 10);
+}
+
+// ── DROPDOWN EVENTS ─────────────────────────────────
+selCabang.addEventListener('change', () => {
   inpNama.value = '';
   closeSug();
   resetSiswa();
-  try {
-    const r = await fetch(`${GAS_URL}?action=getJenjang&cabang=${enc(cabang)}`);
-    const d = await r.json();
-    if (d.status === 'success' && d.data.length) {
-      selJenjang.innerHTML = '<option value="">— Pilih Jenjang —</option>';
-      d.data.forEach(j => {
-        const o = document.createElement('option');
-        o.value = j; o.textContent = j;
-        selJenjang.appendChild(o);
-      });
-      selJenjang.disabled = false;
-    }
-  } catch {
-    selJenjang.innerHTML = '<option value="">Gagal memuat</option>';
+
+  if (!selCabang.value) {
+    selJenjang.innerHTML = '<option value="">— Pilih cabang terlebih dahulu —</option>';
+    selJenjang.disabled = true;
+    inpNama.disabled = true;
+    return;
   }
-}
 
-// ── LOAD STUDENTS (cache per cabang+jenjang) ──────────────────
-async function loadStudents(cabang, jenjang) {
-  const key = `${cabang}|${jenjang}`;
-  if (studentCache[key]) return studentCache[key];
-
-  inpNama.placeholder = 'Memuat data siswa...';
+  const jenjangList = getJenjangList(selCabang.value);
+  selJenjang.innerHTML = '<option value="">— Pilih Jenjang —</option>';
+  jenjangList.forEach(j => {
+    const o = document.createElement('option');
+    o.value = j; o.textContent = j;
+    selJenjang.appendChild(o);
+  });
+  selJenjang.disabled = false;
   inpNama.disabled = true;
+});
 
-  try {
-    const r = await fetch(`${GAS_URL}?action=getStudents&cabang=${enc(cabang)}&jenjang=${enc(jenjang)}`);
-    const d = await r.json();
-    if (d.status === 'success') {
-      studentCache[key] = d.data;
-      inpNama.placeholder = `Ketik nama siswa... (${d.data.length} siswa)`;
-      inpNama.disabled = false;
-      inpNama.focus();
-      return d.data;
-    }
-  } catch {}
+selJenjang.addEventListener('change', () => {
+  inpNama.value = '';
+  closeSug();
+  resetSiswa();
 
-  inpNama.placeholder = 'Gagal memuat — coba lagi';
-  inpNama.disabled = false;
-  return [];
-}
+  if (selJenjang.value) {
+    const count = allStudents.filter(s =>
+      s.cabang === selCabang.value && s.jenjang === selJenjang.value
+    ).length;
+    inpNama.placeholder = `Ketik nama siswa... (${count} siswa)`;
+    inpNama.disabled = false;
+    inpNama.focus();
+  } else {
+    inpNama.disabled = true;
+    inpNama.placeholder = 'Ketik minimal 3 huruf nama siswa...';
+  }
+});
 
-// ── FILTER LOKAL (instan, 0ms) ────────────────────────────────
-function filterStudents(query) {
-  const cabang  = selCabang.value;
-  const jenjang = selJenjang.value;
-  const key     = `${cabang}|${jenjang}`;
-  const all     = studentCache[key] || [];
-  const q       = query.toLowerCase().trim();
-  if (q.length < 3) return [];
-  return all.filter(s => s.nama.toLowerCase().includes(q)).slice(0, 10);
-}
+inpNama.addEventListener('input', () => {
+  resetSiswa();
+  const q = inpNama.value.trim();
+  if (q.length < 3) { closeSug(); return; }
+  const results = searchStudents(selCabang.value, selJenjang.value, q);
+  renderSug(results);
+});
 
-// ── RENDER SUGGESTIONS ────────────────────────────────────────
+// ── SUGGESTION ───────────────────────────────────────
 function renderSug(results) {
   sugBox.innerHTML = '';
   if (!results.length) {
@@ -721,31 +748,29 @@ function renderSug(results) {
 
 function closeSug() { sugBox.classList.remove('on'); sugBox.innerHTML = ''; }
 
-// ── PICK SISWA ────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  if (!e.target.closest('.ac-wrap')) closeSug();
+});
+
+// ── PICK SISWA ───────────────────────────────────────
 function pickSiswa(s) {
   siswa = s;
   inpNama.value = s.nama;
   closeSug();
 
-  // Preview info
   prevNama.textContent = s.nama;
-  prevTags.innerHTML   =
-    pill(s.idUnik) + pill(s.cabang) +
-    pill(`Kursi ${s.nomorKursi}`) + pill(s.kelas);
+  prevTags.innerHTML   = pill(s.idUnik) + pill(s.cabang) + pill(`Kursi ${s.nomorKursi}`) + pill(s.kelas);
   prevBox.classList.add('on');
 
-  // Preview QR blur
-  qrPrevImg.src   = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${enc(s.idUnik)}&color=0d1e40`;
+  qrPrevImg.src          = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${enc(s.idUnik)}&color=0d1e40`;
   qrPrevNama.textContent = s.nama;
   qrPrev.classList.add('on');
 
-  // Enable wali form
   cardWali.style.opacity      = '1';
   cardWali.style.pointerEvents = 'all';
   checkReady();
 }
 
-// ── RESET SISWA (tidak clear input) ───────────────────────────
 function resetSiswa() {
   siswa = null;
   prevBox.classList.remove('on');
@@ -755,24 +780,15 @@ function resetSiswa() {
   btnKonf.disabled = true;
 }
 
-// ── RESET FORM SETELAH KONFIRMASI ────────────────────────────
-// Pertahankan cabang & jenjang (cache tetap valid)
 function resetAfterKonfirmasi() {
   siswa = null;
-  // Clear nama & siswa state
   inpNama.value = '';
   prevBox.classList.remove('on');
   qrPrev.classList.remove('on');
   closeSug();
-  // Clear wali fields
-  inpEmail.value = '';
-  inpHp.value    = '';
-  inpAyah.value  = '';
-  inpIbu.value   = '';
-  // Clear errors
-  ['err-email','err-hp','err-ayah','err-ibu'].forEach(id => $(`${id}`).classList.remove('on'));
+  inpEmail.value = inpHp.value = inpAyah.value = inpIbu.value = '';
+  ['err-email','err-hp','err-ayah','err-ibu'].forEach(id => $(id).classList.remove('on'));
   ['inp-email','inp-hp','inp-ayah','inp-ibu'].forEach(id => $(id).classList.remove('bad'));
-  // Disable wali card & button
   cardWali.style.opacity      = '.35';
   cardWali.style.pointerEvents = 'none';
   btnTxt.textContent = '✦ Konfirmasi Kehadiran';
@@ -780,42 +796,38 @@ function resetAfterKonfirmasi() {
   submitting         = false;
 }
 
-// ── QR PREVIEW CLICK ──────────────────────────────────────────
 function onQrPreviewClick() {
   showToast('🔒 Konfirmasi kehadiran terlebih dahulu untuk membuka kartu QR');
 }
 
-// ── VALIDATION ────────────────────────────────────────────────
+// ── VALIDATION ───────────────────────────────────────
 const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 const validHp    = v => /^[0-9+\s\-]{10,15}$/.test(v.trim());
 const validText  = v => v.trim().length >= 2;
 
 function checkReady() {
   if (!siswa) { btnKonf.disabled = true; return; }
-  const ok = validEmail(inpEmail.value) && validHp(inpHp.value) &&
-             validText(inpAyah.value)   && validText(inpIbu.value);
-  btnKonf.disabled = !ok || submitting;
+  btnKonf.disabled = !(validEmail(inpEmail.value) && validHp(inpHp.value) &&
+                       validText(inpAyah.value)   && validText(inpIbu.value)) || submitting;
 }
 
-function bindValidation(inp, errId, validFn) {
+function bindVal(inp, errId, fn) {
   inp.addEventListener('input', () => {
-    const ok = validFn(inp.value);
-    const hasVal = inp.value.length > 0;
-    $(errId).classList.toggle('on', !ok && hasVal);
-    inp.classList.toggle('bad', !ok && hasVal);
+    const ok = fn(inp.value), has = inp.value.length > 0;
+    $(errId).classList.toggle('on', !ok && has);
+    inp.classList.toggle('bad', !ok && has);
     checkReady();
   });
 }
 
-bindValidation(inpEmail, 'err-email', validEmail);
-bindValidation(inpHp,    'err-hp',    validHp);
-bindValidation(inpAyah,  'err-ayah',  validText);
-bindValidation(inpIbu,   'err-ibu',   validText);
+bindVal(inpEmail, 'err-email', validEmail);
+bindVal(inpHp,    'err-hp',    validHp);
+bindVal(inpAyah,  'err-ayah',  validText);
+bindVal(inpIbu,   'err-ibu',   validText);
 
-// ── SUBMIT KONFIRMASI ─────────────────────────────────────────
+// ── SUBMIT ───────────────────────────────────────────
 btnKonf.addEventListener('click', async () => {
   if (!siswa || submitting) return;
-
   submitting = true;
   btnKonf.classList.add('loading');
   btnKonf.disabled = true;
@@ -831,145 +843,97 @@ btnKonf.addEventListener('click', async () => {
     });
 
     const r = await fetch(GAS_URL, {
-      method  : 'POST',
-      headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
       body
     });
     const d = await r.json();
     btnKonf.classList.remove('loading');
 
     if (d.status === 'success') {
-      fillQrCard(d.data);
-      openModal(ovQr);
+      fillQrCard(d.data); openModal(ovQr);
     } else if (d.status === 'already') {
       pendingSiswa = d.data;
       dupNama.textContent = d.data.nama;
       openModal(ovDup);
     } else {
-      submitting = false;
-      btnKonf.disabled = false;
+      submitting = false; btnKonf.disabled = false;
       showToast('❌ ' + (d.message || 'Terjadi kesalahan. Coba lagi.'), 4000);
     }
   } catch {
     submitting = false;
-    btnKonf.classList.remove('loading');
-    btnKonf.disabled = false;
+    btnKonf.classList.remove('loading'); btnKonf.disabled = false;
     showToast('📡 Gagal terhubung. Pastikan internet stabil.', 4000);
   }
 });
 
-// ── FILL QR CARD ──────────────────────────────────────────────
+// ── QR CARD ──────────────────────────────────────────
 function fillQrCard(s) {
-  const hariLabel = s.hari === 1 ? 'Hari 1 — Ikhwan' : 'Hari 2 — Akhwat';
-  qrImg.src      = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${enc(s.idUnik)}&color=0d1e40&bgcolor=ffffff`;
+  const hl = s.hari === 1 ? 'Hari 1 — Ikhwan' : 'Hari 2 — Akhwat';
+  qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${enc(s.idUnik)}&color=0d1e40&bgcolor=ffffff`;
   qrNama.textContent = s.nama;
   qrPillsA.innerHTML = qcPill(s.idUnik) + qcPill(s.cabang) + qcPill(`Kursi ${s.nomorKursi}`);
-  qrPillsB.innerHTML = qcPillSm(`${s.jenjang} · ${s.kelas}`) + qcPillSm(hariLabel);
+  qrPillsB.innerHTML = qcPillSm(`${s.jenjang} · ${s.kelas}`) + qcPillSm(hl);
 }
 
-// ── MODAL HELPERS ─────────────────────────────────────────────
-function openModal(el)  { el.classList.add('on'); document.body.style.overflow = 'hidden'; }
-function closeModal(el) { el.classList.remove('on'); document.body.style.overflow = ''; }
+// ── MODAL ────────────────────────────────────────────
+function openModal(el)  { el.classList.add('on'); document.body.style.overflow='hidden'; }
+function closeModal(el) { el.classList.remove('on'); document.body.style.overflow=''; }
 
-// Duplikat modal
 $('btn-dup-lihat').addEventListener('click', () => {
   closeModal(ovDup);
   if (pendingSiswa) {
-    siswa = pendingSiswa; // set siswa agar download filename benar
+    siswa = pendingSiswa;
     fillQrCard(pendingSiswa);
-    // Delay kecil agar transisi tutup ov-dup selesai sebelum buka ov-qr
     setTimeout(() => openModal(ovQr), 120);
   }
 });
-$('btn-dup-tutup').addEventListener('click', () => {
-  closeModal(ovDup);
-  resetAfterKonfirmasi();
-});
+$('btn-dup-tutup').addEventListener('click', () => { closeModal(ovDup); resetAfterKonfirmasi(); });
+$('btn-qr-tutup').addEventListener('click', () => { closeModal(ovQr);  resetAfterKonfirmasi(); });
+ovDup.addEventListener('click', e => { if(e.target===ovDup){closeModal(ovDup);resetAfterKonfirmasi();}});
+ovQr.addEventListener('click',  e => { if(e.target===ovQr) {closeModal(ovQr); resetAfterKonfirmasi();}});
 
-// QR modal
-$('btn-qr-tutup').addEventListener('click', () => {
-  closeModal(ovQr);
-  resetAfterKonfirmasi();
-});
-
-ovDup.addEventListener('click', e => { if (e.target === ovDup) { closeModal(ovDup); resetAfterKonfirmasi(); }});
-ovQr.addEventListener('click',  e => { if (e.target === ovQr)  { closeModal(ovQr);  resetAfterKonfirmasi(); }});
-
-// ── DOWNLOAD KARTU ────────────────────────────────────────────
+// ── DOWNLOAD ─────────────────────────────────────────
 btnDl.addEventListener('click', async () => {
-  btnDl.textContent = 'Memproses...';
-  btnDl.disabled    = true;
-
-  if (!qrImg.complete || !qrImg.naturalWidth) {
+  btnDl.textContent = 'Memproses...'; btnDl.disabled = true;
+  if (!qrImg.complete || !qrImg.naturalWidth)
     await new Promise(res => { qrImg.onload = res; qrImg.onerror = res; });
-  }
-
   try {
     const canvas = await html2canvas($('qr-card'), {
-      backgroundColor : '#0d1e40',
-      scale: 3, useCORS: true, allowTaint: true, logging: false
+      backgroundColor:'#0d1e40', scale:3, useCORS:true, allowTaint:true, logging:false
     });
     const link = document.createElement('a');
     link.download = `Kartu_QR_${siswa ? siswa.nama.replace(/\s+/g,'_') : 'Wisuda'}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
-  } catch {
-    showToast('Gagal mengunduh. Coba screenshot manual.', 4000);
-  }
-
-  btnDl.innerHTML = '⬇ Download Kartu QR';
-  btnDl.disabled  = false;
+  } catch { showToast('Gagal mengunduh. Coba screenshot manual.', 4000); }
+  btnDl.innerHTML = '⬇ Download Kartu QR'; btnDl.disabled = false;
 });
 
-// ── EVENTS ────────────────────────────────────────────────────
-selCabang.addEventListener('change', () => {
-  studentCache = {}; // clear cache saat cabang berubah
-  selCabang.value ? loadJenjang(selCabang.value) : (
-    selJenjang.innerHTML = '<option value="">— Pilih cabang terlebih dahulu —</option>',
-    selJenjang.disabled = true,
-    inpNama.disabled = true,
-    inpNama.value = '',
-    closeSug(), resetSiswa()
-  );
-});
+// ── TOAST ────────────────────────────────────────────
+function showToast(msg, dur=3000) {
+  toast.textContent = msg;
+  toast.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('on'), dur);
+}
 
-selJenjang.addEventListener('change', async () => {
-  inpNama.value = '';
-  closeSug();
-  resetSiswa();
-  if (selJenjang.value) {
-    await loadStudents(selCabang.value, selJenjang.value);
-  } else {
-    inpNama.disabled = true;
-  }
-});
-
-inpNama.addEventListener('input', () => {
-  resetSiswa();
-  const q = inpNama.value.trim();
-  if (q.length < 3) { closeSug(); return; }
-  const results = filterStudents(q);
-  renderSug(results);
-});
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.ac-wrap')) closeSug();
-});
-
+// ── SMOOTH SCROLL ────────────────────────────────────
 document.querySelectorAll('input, select').forEach(el => {
   el.addEventListener('focus', () => {
     setTimeout(() => el.scrollIntoView({ behavior:'smooth', block:'center' }), 300);
   });
 });
 
-// ── HELPERS ───────────────────────────────────────────────────
+// ── HELPERS ──────────────────────────────────────────
 const enc      = v => encodeURIComponent(v);
 const pill     = t => `<span class="prev-tag">${t}</span>`;
 const qcPill   = t => `<span class="qc-pill">${t}</span>`;
 const qcPillSm = t => `<span class="qc-pill-sm">${t}</span>`;
+const sleep    = ms => new Promise(res => setTimeout(res, ms));
 
-// ── START ─────────────────────────────────────────────────────
-loadCabang();
+// ── START ────────────────────────────────────────────
+initApp();
 </script>
 </body>
 </html>
