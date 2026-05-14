@@ -882,11 +882,10 @@ $('btn-dup-tutup').addEventListener('click', () => {
 $('btn-qr-tutup').addEventListener('click', () => {
   closeModal(ovQr);
   resetAfterKonfirmasi();
-  showToast('✅ Konfirmasi berhasil! Silakan input untuk wali lain.');
 });
 
 ovDup.addEventListener('click', e => { if (e.target === ovDup) { closeModal(ovDup); resetAfterKonfirmasi(); }});
-ovQr.addEventListener('click',  e => { if (e.target === ovQr)  { closeModal(ovQr);  resetAfterKonfirmasi(); showToast('✅ Konfirmasi berhasil! Silakan input untuk wali lain.'); }});
+ovQr.addEventListener('click',  e => { if (e.target === ovQr)  { closeModal(ovQr);  resetAfterKonfirmasi(); }});
 
 // ── DOWNLOAD KARTU ────────────────────────────────────────────
 btnDl.addEventListener('click', async () => {
