@@ -614,6 +614,8 @@ async function loadJenjang(cabang) {
   selJenjang.disabled = true;
   selJenjang.innerHTML = '<option value="">Memuat...</option>';
   inpNama.disabled = true;
+  inpNama.value = '';
+  closeSug();
   resetSiswa();
   try {
     const r = await fetch(`${GAS_URL}?action=getJenjang&cabang=${enc(cabang)}`);
@@ -691,7 +693,6 @@ function pickSiswa(s) {
 
 function resetSiswa() {
   siswa = null;
-  inpNama.value = '';
   prevBox.classList.remove('on');
   cardWali.style.opacity = '.35';
   cardWali.style.pointerEvents = 'none';
@@ -824,12 +825,13 @@ btnDl.addEventListener('click', async () => {
 selCabang.addEventListener('change', () => {
   selCabang.value ? loadJenjang(selCabang.value)
     : (selJenjang.innerHTML = '<option value="">— Pilih cabang terlebih dahulu —</option>',
-       selJenjang.disabled = true, inpNama.disabled = true, resetSiswa());
+       selJenjang.disabled = true, inpNama.disabled = true,
+       inpNama.value = '', closeSug(), resetSiswa());
 });
 
 selJenjang.addEventListener('change', () => {
   if (selJenjang.value) { inpNama.disabled = false; inpNama.focus(); }
-  else { inpNama.disabled = true; resetSiswa(); }
+  else { inpNama.disabled = true; inpNama.value = ''; closeSug(); resetSiswa(); }
 });
 
 inpNama.addEventListener('input', () => { resetSiswa(); triggerSearch(inpNama.value.trim()); });
