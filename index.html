@@ -323,6 +323,9 @@
     }
     .overlay.on { opacity:1; pointer-events:all; }
 
+    /* QR modal lebih tinggi dari duplikat modal */
+    #ov-qr { z-index:9100; }
+
     .m-inner {
       display:flex; flex-direction:column; align-items:center; gap:14px;
       width:100%; max-width:300px;
@@ -871,7 +874,12 @@ function closeModal(el) { el.classList.remove('on'); document.body.style.overflo
 // Duplikat modal
 $('btn-dup-lihat').addEventListener('click', () => {
   closeModal(ovDup);
-  if (pendingSiswa) { fillQrCard(pendingSiswa); openModal(ovQr); }
+  if (pendingSiswa) {
+    siswa = pendingSiswa; // set siswa agar download filename benar
+    fillQrCard(pendingSiswa);
+    // Delay kecil agar transisi tutup ov-dup selesai sebelum buka ov-qr
+    setTimeout(() => openModal(ovQr), 120);
+  }
 });
 $('btn-dup-tutup').addEventListener('click', () => {
   closeModal(ovDup);
